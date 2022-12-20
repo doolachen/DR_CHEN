@@ -1,4 +1,6 @@
 # DR_CHEN
 ## Run apps
-pip install numpy streamit 
-streamit run app.py
+1. Environment
+`pip install numpy streamit`
+2. Run
+`streamit run app.py`
