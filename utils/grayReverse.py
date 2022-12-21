@@ -1,7 +1,6 @@
 import numpy as np
 # 灰度翻转(反相)函数 针对256级灰度图像
 def grayReverse(data:np.ndarray) -> np.ndarray:
-    print(data)
     h,w = data.shape
     out = np.zeros([h,w],dtype=data.dtype)
     # 遍历像素值
