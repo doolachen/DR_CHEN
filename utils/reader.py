@@ -21,7 +21,7 @@ class Reader:
         self.maxpixel = np.max(self.data)
         self.minpixel = np.min(self.data)
 # test
-if __name__ == '__main__':
-    reader = Reader()
-    reader.readfrompath('../DRImgs/lung.tif')
-    print()
+# if __name__ == '__main__':
+#     reader = Reader()
+#     reader.readfrompath('../DRImgs/lung.tif')
+#     print()
