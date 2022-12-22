@@ -9,6 +9,7 @@ from utils.grayReverse import grayReverse
 from utils.LRflip import LRflip
 from utils.rotate import rotate
 from utils.scale import scale
+from utils.sharpening import laplacian
 from PIL import Image
 current_img = None
 initFlag = False
@@ -46,7 +47,7 @@ def app():
         slider_wl = st.sidebar.slider('窗位调节', min_value=0, max_value=4095, value=int(default_wl), key='sliderwl')
         slider_ww = st.sidebar.slider('窗宽调节', min_value=0, max_value=4095, value=int(default_ww), key='sliderww')
 
-        bt_enhance = st.sidebar.button
+        bt_enhance = st.sidebar.button('图像增强')
 
         if initFlag is not True:
             current_img = mappingByWindow(img.data, slider_wl, slider_ww)
@@ -66,7 +67,7 @@ def app():
         with col6:
             aspect_choice = st.radio(label="放大框比例", options=["1:1", "Free"])
 
-        if bt_grayReverse or bt_LFflip or bt_Lrotate or bt_Rrotate:
+        if bt_grayReverse or bt_LFflip or bt_Lrotate or bt_Rrotate or bt_enhance:
             if bt_grayReverse:
                 current_img = grayReverse(current_img)
             if bt_LFflip:
@@ -75,12 +76,21 @@ def app():
                 current_img = rotate(current_img, 90)
             if bt_Rrotate:
                 current_img = rotate(current_img, 270)
+            if bt_enhance:
+                # temp_img = laplacian(img.data)
+                # minPixel = np.min(temp_img)
+                # maxPixel = np.max(temp_img)
+                # wl = (maxPixel - minPixel)//2
+                # ww = maxPixel - minPixel
+                # current_img = mappingByWindow(temp_img, wl, ww)
+                current_img = laplacian(current_img)
+
         else:
             current_img = mappingByWindow(img.data, slider_wl, slider_ww)
 
-
         aspect_dict = {"1:1": (1, 1),"Free": None}
         aspect_ratio = aspect_dict[aspect_choice]
+
         crop_img = st_cropper(Image.fromarray(current_img), realtime_update=True, box_color='#FFFF00', aspect_ratio=aspect_ratio)
 
         scaled_img = scale(np.array(crop_img),float(scaler[:-1]))
