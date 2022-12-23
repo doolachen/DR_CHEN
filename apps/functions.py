@@ -77,13 +77,13 @@ def app():
             if bt_Rrotate:
                 current_img = rotate(current_img, 270)
             if bt_enhance:
-                # temp_img = laplacian(img.data)
-                # minPixel = np.min(temp_img)
-                # maxPixel = np.max(temp_img)
-                # wl = (maxPixel - minPixel)//2
-                # ww = maxPixel - minPixel
-                # current_img = mappingByWindow(temp_img, wl, ww)
-                current_img = laplacian(current_img)
+                temp_img = laplacian(img.data)
+                minPixel = np.min(temp_img)
+                maxPixel = np.max(temp_img)
+                wl = (maxPixel - minPixel)//2
+                ww = maxPixel - minPixel
+                current_img = mappingByWindow(temp_img, wl, ww)
+                # current_img = laplacian(current_img)
 
         else:
             current_img = mappingByWindow(img.data, slider_wl, slider_ww)

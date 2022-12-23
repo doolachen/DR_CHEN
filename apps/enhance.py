@@ -8,7 +8,7 @@ from utils.sharpening import laplacian
 
 
 def app():
-    st.title('原始图像增强并下载')
+    st.title('原始图像增强下载工具')
     img_path = st.file_uploader("上传TIF图像", type=["tif"])
 
     if img_path:
@@ -28,12 +28,20 @@ def app():
         st.image(current_img, caption=f"上传的图像", use_column_width=True)
 
         buf = BytesIO()
-
-        @st.cache
+        @st.cache(suppress_st_warning=True)
         def convert_df():
             enhanced_img = laplacian(img.data)
             Image.fromarray(enhanced_img).save(buf, format="TIFF")
             res = buf.getvalue()
+            minPixel = np.min(enhanced_img)
+            maxPixel = np.max(enhanced_img)
+            wl = (maxPixel - minPixel) // 2
+            ww = maxPixel - minPixel
+            after_img = mappingByWindow(enhanced_img, wl, ww)
+            st.image(after_img, caption=f"增强后的图像", use_column_width=True)
+
             return res
 
-        st.download_button('增强并保存TIF文件', convert_df(), file_name='out.tif')
+
+
+        st.download_button('保存TIF文件', convert_df(), file_name='out.tif')

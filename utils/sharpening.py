@@ -31,7 +31,9 @@ def laplacian(data: np.ndarray) -> np.ndarray:
         for j in range(1, w_ - 1):
             out[i, j] = img[i, j] + c * np.sum(kernel * img[i - 1:i + 2, j - 1:j + 2])  # g(x,y) = f(x,y) + c[∇^2f(x,y)]
     out = out[1:h_ - 1, 1:w_ - 1]
-    out = normalize(out, Min, Max)  # 标准化到这个范围
+    out[out>4095] = 4095
+    out[out<0] = 0
+    # out = normalize(out, Min, Max)  # 标准化到这个范围
     return out
 
 # test
